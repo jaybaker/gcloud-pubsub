@@ -3,18 +3,27 @@ import json
 
 from google.cloud import pubsub_v1
 
-def handle(msg, load_json=True):
-    """Convert msg per pubsub protocol / data format
+def decode(msg):
+    """ Convert data per pubsub protocol / data format
     Args:
         msg: The msg from Google Cloud
-        load_json: If True will treat data as json
     Returns:
-        ctx: The msg converted to a string
+        data: The msg data as a string
     """
     if 'data' in msg:
-        ctx = base64.b64decode(msg['data']).decode('utf-8')
-        if load_json:
-            ctx = json.loads(ctx)
+        data = base64.b64decode(msg['data']).decode('utf-8')
+        return data
+
+def extract(msg):
+    """Extract msg data as dict
+    Args:
+        msg: The msg from Google Cloud
+    Returns:
+        ctx: The msg as a dictionary
+    """
+    data = decode(msg)
+    if data:
+        ctx = json.loads(ctx)
         return ctx
 
 def publish(topic, data, project_id=None):
