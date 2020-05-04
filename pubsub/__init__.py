@@ -23,7 +23,7 @@ def extract(msg):
     """
     data = decode(msg)
     if data:
-        ctx = json.loads(ctx)
+        ctx = json.loads(data)
         return ctx
 
 def publish(topic, data, project_id=None):
